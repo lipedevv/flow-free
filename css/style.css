@@ -1,4 +1,128 @@
 /* based on https://github.com/AUTOMATIC1111/stable-diffusion-webui/blob/v1.6.0/style.css */
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+:root {
+  --flowfree-bg-0: #f2f5ef;
+  --flowfree-bg-1: #dde8f0;
+  --flowfree-bg-2: #f9efe2;
+  --flowfree-panel: rgba(255, 255, 255, 0.76);
+  --flowfree-border: rgba(13, 52, 74, 0.18);
+  --flowfree-ink: #112336;
+  --flowfree-muted: #31546d;
+  --flowfree-accent: #0f8f78;
+  --flowfree-accent-soft: #ddf7ef;
+  --flowfree-focus: rgba(15, 143, 120, 0.28);
+  --flowfree-shadow: 0 20px 40px rgba(22, 38, 53, 0.16);
+}
+
+html,
+body {
+  min-height: 100%;
+  font-family: "Space Grotesk", "Segoe UI", sans-serif;
+  color: var(--flowfree-ink);
+  background:
+    radial-gradient(circle at 12% 10%, var(--flowfree-bg-1) 0%, transparent 42%),
+    radial-gradient(circle at 86% 82%, var(--flowfree-bg-2) 0%, transparent 45%),
+    linear-gradient(140deg, var(--flowfree-bg-0), #f8fafc 44%, #eaf2f8 100%);
+}
+
+gradio-app {
+  background: transparent !important;
+}
+
+.gradio-container {
+  max-width: 1600px !important;
+  margin: 0 auto !important;
+  padding: 14px 16px 24px !important;
+  background: transparent !important;
+}
+
+.flowfree-brandbar {
+  margin-bottom: 12px;
+  padding: 14px 16px;
+  border: 1px solid var(--flowfree-border);
+  border-radius: 16px;
+  background:
+    linear-gradient(120deg, rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.3)),
+    repeating-linear-gradient(
+      -30deg,
+      rgba(15, 143, 120, 0.05) 0px,
+      rgba(15, 143, 120, 0.05) 8px,
+      rgba(12, 96, 161, 0.03) 8px,
+      rgba(12, 96, 161, 0.03) 16px
+    );
+  box-shadow: var(--flowfree-shadow);
+}
+
+.flowfree-brand-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+
+.flowfree-brand-subtitle {
+  margin-top: 3px;
+  font-size: 0.93rem;
+  color: var(--flowfree-muted);
+}
+
+.gradio-container .block {
+  border: 1px solid var(--flowfree-border) !important;
+  border-radius: 14px !important;
+  background: var(--flowfree-panel) !important;
+  box-shadow: 0 10px 28px rgba(19, 44, 62, 0.09) !important;
+  backdrop-filter: blur(6px);
+}
+
+.gradio-container textarea,
+.gradio-container input,
+.gradio-container select {
+  font-family: "JetBrains Mono", "Consolas", monospace !important;
+}
+
+.gradio-container button {
+  border-radius: 12px !important;
+  border: 1px solid rgba(14, 76, 113, 0.18) !important;
+  transition: transform 0.12s ease, box-shadow 0.2s ease, background-color 0.2s ease !important;
+}
+
+.gradio-container button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(17, 66, 100, 0.17) !important;
+}
+
+.gradio-container button.primary {
+  border-color: transparent !important;
+  background: linear-gradient(135deg, #0f8f78, #1d749f) !important;
+  color: #f6fffd !important;
+}
+
+.gradio-container button.primary:hover {
+  background: linear-gradient(135deg, #0b7f6b, #1a6890) !important;
+}
+
+.gradio-container input:focus,
+.gradio-container textarea:focus,
+.gradio-container select:focus {
+  box-shadow: 0 0 0 3px var(--flowfree-focus) !important;
+  border-color: rgba(15, 143, 120, 0.6) !important;
+}
+
+.gradio-container .tabs > .tab-nav {
+  gap: 6px;
+  padding-bottom: 5px;
+}
+
+.gradio-container .tabs > .tab-nav button {
+  border: 1px solid transparent !important;
+  border-radius: 10px !important;
+}
+
+.gradio-container .tabs > .tab-nav button.selected {
+  background: var(--flowfree-accent-soft) !important;
+  border-color: rgba(15, 143, 120, 0.35) !important;
+  color: #0a5f50 !important;
+}
 
 .loader-container {
   display: flex; /* Use flex to align items horizontally */
@@ -7,8 +131,8 @@
 }
 
 .loader {
-  border: 8px solid #f3f3f3; /* Light grey */
-  border-top: 8px solid #3498db; /* Blue */
+  border: 8px solid #f3f5f7; /* Light grey */
+  border-top: 8px solid var(--flowfree-accent); /* Accent */
   border-radius: 50%;
   width: 30px;
   height: 30px;
@@ -39,11 +163,11 @@ progress {
 
 /* Set the color of the progress bar fill */
 progress::-webkit-progress-value {
-  background-color: #3498db; /* Blue color for the fill */
+  background-color: var(--flowfree-accent); /* Accent color for the fill */
 }
 
 progress::-moz-progress-bar {
-  background-color: #3498db; /* Blue color for the fill in Firefox */
+  background-color: var(--flowfree-accent); /* Accent color for the fill in Firefox */
 }
 
 /* Style the text on the progress bar */
@@ -150,10 +274,11 @@ div:has(> #positive_prompt) {
     position:absolute;
     display:block;
     padding:0px 0;
-    border:2px solid #a55000;
+    border:2px solid #0d826c;
     border-radius:8px;
-    box-shadow:1px 1px 2px #CE6400;
+    box-shadow: 0 10px 18px rgba(14, 66, 55, 0.28);
     width: 200px;
+    background: #fbfffd;
 }
 
 .context-menu-items{
@@ -169,7 +294,7 @@ div:has(> #positive_prompt) {
 }
 
 .context-menu-items a:hover{
-    background: #a55000;
+    background: #e3f7f1;
 }
 
 .canvas-tooltip-info {
@@ -402,8 +527,8 @@ div:has(> #positive_prompt) {
 
 /* styles preview tooltip */
 .preview-tooltip {
-  background-color: #fff8;
-  font-family: monospace;
+  background-color: #f8fffc;
+  font-family: "JetBrains Mono", monospace;
   text-align: center;
   border-radius: 5px 5px 0px 0px;
   display: none; /* remove this to enable tooltip in preview image */
@@ -415,4 +540,22 @@ div:has(> #positive_prompt) {
 
 #inpaint_brush_color input[type=color]{
   background: none;
+}
+
+@media (max-width: 900px) {
+  .flowfree-brand-title {
+    font-size: 1.2rem;
+  }
+
+  .flowfree-brand-subtitle {
+    font-size: 0.83rem;
+  }
+
+  .type_row {
+    height: 62px !important;
+  }
+
+  .gradio-container {
+    padding: 10px 10px 18px !important;
+  }
 }

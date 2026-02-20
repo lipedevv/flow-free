@@ -34,7 +34,7 @@ def log(img, metadata, metadata_parser: MetadataParser | None = None, output_for
         if parsed_parameters != '':
             pnginfo = PngInfo()
             pnginfo.add_text('parameters', parsed_parameters)
-            pnginfo.add_text('fooocus_scheme', metadata_parser.get_scheme().value)
+            pnginfo.add_text('flowfree_scheme', metadata_parser.get_scheme().value)
         else:
             pnginfo = None
         image.save(local_temp_filename, pnginfo=pnginfo)
@@ -91,14 +91,15 @@ def log(img, metadata, metadata_parser: MetadataParser | None = None, output_for
         </script>"""
     )
 
-    begin_part = f"<!DOCTYPE html><html><head><title>Fooocus Log {date_string}</title>{css_styles}</head><body>{js}<p>Fooocus Log {date_string} (private)</p>\n<p>Metadata is embedded if enabled in the config or developer debug mode. You can find the information for each image in line Metadata Scheme.</p><!--fooocus-log-split-->\n\n"
-    end_part = f'\n<!--fooocus-log-split--></body></html>'
+    begin_part = f"<!DOCTYPE html><html><head><title>FlowFree Log {date_string}</title>{css_styles}</head><body>{js}<p>FlowFree Log {date_string} (private)</p>\n<p>Metadata is embedded if enabled in the config or developer debug mode. You can find the information for each image in line Metadata Scheme.</p><!--flowfree-log-split-->\n\n"
+    end_part = f'\n<!--flowfree-log-split--></body></html>'
 
     middle_part = log_cache.get(html_name, "")
 
     if middle_part == "":
         if os.path.exists(html_name):
-            existing_split = open(html_name, 'r', encoding='utf-8').read().split('<!--fooocus-log-split-->')
+            html_content = open(html_name, 'r', encoding='utf-8').read()
+            existing_split = html_content.split('<!--flowfree-log-split-->')
             if len(existing_split) == 3:
                 middle_part = existing_split[1]
             else:

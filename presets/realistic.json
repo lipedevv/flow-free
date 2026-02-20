@@ -1,4 +1,4 @@
-{
+﻿{
     "default_model": "realisticStockPhoto_v20.safetensors",
     "default_refiner": "None",
     "default_refiner_switch": 0.5,
@@ -37,14 +37,14 @@
     "default_prompt": "",
     "default_prompt_negative": "unrealistic, saturated, high contrast, big nose, painting, drawing, sketch, cartoon, anime, manga, render, CG, 3d, watermark, signature, label",
     "default_styles": [
-        "Fooocus V2",
-        "Fooocus Photograph",
-        "Fooocus Negative"
+        "FlowFree V2",
+        "FlowFree Photograph",
+        "FlowFree Negative"
     ],
     "default_aspect_ratio": "896*1152",
     "default_overwrite_step": -1,
     "checkpoint_downloads": {
-        "realisticStockPhoto_v20.safetensors": "https://huggingface.co/lllyasviel/fav_models/resolve/main/fav/realisticStockPhoto_v20.safetensors"
+        "realisticStockPhoto_v20.safetensors": "https://huggingface.co/lipedevv/fav_models/resolve/main/fav/realisticStockPhoto_v20.safetensors"
     },
     "embeddings_downloads": {},
     "lora_downloads": {
@@ -52,3 +52,4 @@
     },
     "previous_default_models": ["realisticStockPhoto_v10.safetensors"]
 }
+

@@ -13,15 +13,14 @@ os.chdir(project_root)
 
 try:
     import pygit2
+
     pygit2.option(pygit2.GIT_OPT_SET_OWNER_VALIDATION, 0)
 
     repo = pygit2.Repository(project_root)
-
     branch_name = repo.head.shorthand
 
     remote_name = 'origin'
     remote = repo.remotes[remote_name]
-
     remote.fetch()
 
     local_branch_ref = f'refs/heads/{branch_name}'

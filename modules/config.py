@@ -1,4 +1,4 @@
-import os
+﻿import os
 import json
 import math
 import numbers
@@ -29,7 +29,7 @@ always_save_keys = []
 visited_keys = []
 
 try:
-    with open(os.path.abspath(f'./presets/default.json'), "r", encoding="utf-8") as json_file:
+    with open(os.path.abspath(f'./presets/default.json'), "r", encoding="utf-8-sig") as json_file:
         config_dict.update(json.load(json_file))
 except Exception as e:
     print(f'Load default preset failed.')
@@ -37,7 +37,7 @@ except Exception as e:
 
 try:
     if os.path.exists(config_path):
-        with open(config_path, "r", encoding="utf-8") as json_file:
+        with open(config_path, "r", encoding="utf-8-sig") as json_file:
             config_dict.update(json.load(json_file))
             always_save_keys = list(config_dict.keys())
 except Exception as e:
@@ -56,7 +56,7 @@ def try_load_deprecated_user_path_config():
         return
 
     try:
-        deprecated_config_dict = json.load(open('user_path_config.txt', "r", encoding="utf-8"))
+        deprecated_config_dict = json.load(open('user_path_config.txt', "r", encoding="utf-8-sig"))
 
         def replace_config(old_key, new_key):
             if old_key in deprecated_config_dict:
@@ -71,7 +71,7 @@ def try_load_deprecated_user_path_config():
         replace_config('inpaint_models_path', 'path_inpaint')
         replace_config('controlnet_models_path', 'path_controlnet')
         replace_config('clip_vision_models_path', 'path_clip_vision')
-        replace_config('fooocus_expansion_path', 'path_fooocus_expansion')
+        replace_config('flowfree_expansion_path', 'path_flowfree_expansion')
         replace_config('temp_outputs_path', 'path_outputs')
 
         if deprecated_config_dict.get("default_model", None) == 'juggernautXL_version6Rundiffusion.safetensors':
@@ -116,7 +116,7 @@ def try_get_preset_content(preset):
         preset_path = os.path.abspath(f'./presets/{preset}.json')
         try:
             if os.path.exists(preset_path):
-                with open(preset_path, "r", encoding="utf-8") as json_file:
+                with open(preset_path, "r", encoding="utf-8-sig") as json_file:
                     json_content = json.load(json_file)
                     print(f'Loaded preset: {preset_path}')
                     return json_content
@@ -197,7 +197,7 @@ path_upscale_models = get_dir_or_set_default('path_upscale_models', '../models/u
 path_inpaint = get_dir_or_set_default('path_inpaint', '../models/inpaint/')
 path_controlnet = get_dir_or_set_default('path_controlnet', '../models/controlnet/')
 path_clip_vision = get_dir_or_set_default('path_clip_vision', '../models/clip_vision/')
-path_fooocus_expansion = get_dir_or_set_default('path_fooocus_expansion', '../models/prompt_expansion/fooocus_expansion')
+path_flowfree_expansion = get_dir_or_set_default('path_flowfree_expansion', '../models/prompt_expansion/flowfree_expansion')
 path_wildcards = get_dir_or_set_default('path_wildcards', '../wildcards/')
 path_safety_checker = get_dir_or_set_default('path_safety_checker', '../models/safety_checker/')
 path_sam = get_dir_or_set_default('path_sam', '../models/sam/')
@@ -252,7 +252,7 @@ def init_temp_path(path: str | None, default_path: str) -> str:
     return default_path
 
 
-default_temp_path = os.path.join(tempfile.gettempdir(), 'fooocus')
+default_temp_path = os.path.join(tempfile.gettempdir(), 'flowfree')
 temp_path = init_temp_path(get_config_item_or_set_default(
     key='temp_path',
     default_value=default_temp_path,
@@ -376,9 +376,9 @@ default_vae = get_config_item_or_set_default(
 default_styles = get_config_item_or_set_default(
     key='default_styles',
     default_value=[
-        "Fooocus V2",
-        "Fooocus Enhance",
-        "Fooocus Sharp"
+        "FlowFree V2",
+        "FlowFree Enhance",
+        "FlowFree Sharp"
     ],
     validator=lambda x: isinstance(x, list) and all(y in modules.sdxl_styles.legal_style_names for y in x),
     expected_type=list
@@ -657,7 +657,7 @@ default_save_metadata_to_images = get_config_item_or_set_default(
 )
 default_metadata_scheme = get_config_item_or_set_default(
     key='default_metadata_scheme',
-    default_value=MetadataScheme.FOOOCUS.value,
+    default_value=MetadataScheme.FLOWFREE.value,
     validator=lambda x: x in [y[1] for y in modules.flags.metadata_scheme if y[1] == x],
     expected_type=str
 )
@@ -768,7 +768,7 @@ def add_ratio(x):
     a, b = x.replace('*', ' ').split(' ')[:2]
     a, b = int(a), int(b)
     g = math.gcd(a, b)
-    return f'{a}×{b} <span style="color: grey;"> \U00002223 {a // g}:{b // g}</span>'
+    return f'{a}Ã—{b} <span style="color: grey;"> \U00002223 {a // g}:{b // g}</span>'
 
 
 default_aspect_ratio = add_ratio(default_aspect_ratio)
@@ -824,7 +824,7 @@ def downloading_inpaint_models(v):
     assert v in modules.flags.inpaint_engine_versions
 
     load_file_from_url(
-        url='https://huggingface.co/lllyasviel/fooocus_inpaint/resolve/main/fooocus_inpaint_head.pth',
+        url='https://huggingface.co/lipedevv/fooocus_inpaint/resolve/main/fooocus_inpaint_head.pth',
         model_dir=path_inpaint,
         file_name='fooocus_inpaint_head.pth'
     )
@@ -833,7 +833,7 @@ def downloading_inpaint_models(v):
 
     if v == 'v1':
         load_file_from_url(
-            url='https://huggingface.co/lllyasviel/fooocus_inpaint/resolve/main/inpaint.fooocus.patch',
+            url='https://huggingface.co/lipedevv/fooocus_inpaint/resolve/main/inpaint.fooocus.patch',
             model_dir=path_inpaint,
             file_name='inpaint.fooocus.patch'
         )
@@ -841,7 +841,7 @@ def downloading_inpaint_models(v):
 
     if v == 'v2.5':
         load_file_from_url(
-            url='https://huggingface.co/lllyasviel/fooocus_inpaint/resolve/main/inpaint_v25.fooocus.patch',
+            url='https://huggingface.co/lipedevv/fooocus_inpaint/resolve/main/inpaint_v25.fooocus.patch',
             model_dir=path_inpaint,
             file_name='inpaint_v25.fooocus.patch'
         )
@@ -849,7 +849,7 @@ def downloading_inpaint_models(v):
 
     if v == 'v2.6':
         load_file_from_url(
-            url='https://huggingface.co/lllyasviel/fooocus_inpaint/resolve/main/inpaint_v26.fooocus.patch',
+            url='https://huggingface.co/lipedevv/fooocus_inpaint/resolve/main/inpaint_v26.fooocus.patch',
             model_dir=path_inpaint,
             file_name='inpaint_v26.fooocus.patch'
         )
@@ -860,7 +860,7 @@ def downloading_inpaint_models(v):
 
 def downloading_sdxl_lcm_lora():
     load_file_from_url(
-        url='https://huggingface.co/lllyasviel/misc/resolve/main/sdxl_lcm_lora.safetensors',
+        url='https://huggingface.co/lipedevv/misc/resolve/main/sdxl_lcm_lora.safetensors',
         model_dir=paths_loras[0],
         file_name=modules.flags.PerformanceLoRA.EXTREME_SPEED.value
     )
@@ -887,7 +887,7 @@ def downloading_sdxl_hyper_sd_lora():
 
 def downloading_controlnet_canny():
     load_file_from_url(
-        url='https://huggingface.co/lllyasviel/misc/resolve/main/control-lora-canny-rank128.safetensors',
+        url='https://huggingface.co/lipedevv/misc/resolve/main/control-lora-canny-rank128.safetensors',
         model_dir=path_controlnet,
         file_name='control-lora-canny-rank128.safetensors'
     )
@@ -896,7 +896,7 @@ def downloading_controlnet_canny():
 
 def downloading_controlnet_cpds():
     load_file_from_url(
-        url='https://huggingface.co/lllyasviel/misc/resolve/main/fooocus_xl_cpds_128.safetensors',
+        url='https://huggingface.co/lipedevv/misc/resolve/main/fooocus_xl_cpds_128.safetensors',
         model_dir=path_controlnet,
         file_name='fooocus_xl_cpds_128.safetensors'
     )
@@ -909,14 +909,14 @@ def downloading_ip_adapters(v):
     results = []
 
     load_file_from_url(
-        url='https://huggingface.co/lllyasviel/misc/resolve/main/clip_vision_vit_h.safetensors',
+        url='https://huggingface.co/lipedevv/misc/resolve/main/clip_vision_vit_h.safetensors',
         model_dir=path_clip_vision,
         file_name='clip_vision_vit_h.safetensors'
     )
     results += [os.path.join(path_clip_vision, 'clip_vision_vit_h.safetensors')]
 
     load_file_from_url(
-        url='https://huggingface.co/lllyasviel/misc/resolve/main/fooocus_ip_negative.safetensors',
+        url='https://huggingface.co/lipedevv/misc/resolve/main/fooocus_ip_negative.safetensors',
         model_dir=path_controlnet,
         file_name='fooocus_ip_negative.safetensors'
     )
@@ -924,7 +924,7 @@ def downloading_ip_adapters(v):
 
     if v == 'ip':
         load_file_from_url(
-            url='https://huggingface.co/lllyasviel/misc/resolve/main/ip-adapter-plus_sdxl_vit-h.bin',
+            url='https://huggingface.co/lipedevv/misc/resolve/main/ip-adapter-plus_sdxl_vit-h.bin',
             model_dir=path_controlnet,
             file_name='ip-adapter-plus_sdxl_vit-h.bin'
         )
@@ -932,7 +932,7 @@ def downloading_ip_adapters(v):
 
     if v == 'face':
         load_file_from_url(
-            url='https://huggingface.co/lllyasviel/misc/resolve/main/ip-adapter-plus-face_sdxl_vit-h.bin',
+            url='https://huggingface.co/lipedevv/misc/resolve/main/ip-adapter-plus-face_sdxl_vit-h.bin',
             model_dir=path_controlnet,
             file_name='ip-adapter-plus-face_sdxl_vit-h.bin'
         )
@@ -943,7 +943,7 @@ def downloading_ip_adapters(v):
 
 def downloading_upscale_model():
     load_file_from_url(
-        url='https://huggingface.co/lllyasviel/misc/resolve/main/fooocus_upscaler_s409985e5.bin',
+        url='https://huggingface.co/lipedevv/misc/resolve/main/fooocus_upscaler_s409985e5.bin',
         model_dir=path_upscale_models,
         file_name='fooocus_upscaler_s409985e5.bin'
     )
@@ -995,3 +995,4 @@ def downloading_sam_vit_h():
         file_name='sam_vit_h_4b8939.pth'
     )
     return os.path.join(path_sam, 'sam_vit_h_4b8939.pth')
+

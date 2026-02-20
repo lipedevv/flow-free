@@ -1,4 +1,4 @@
-# https://huggingface.co/spaces/SmilingWolf/wd-v1-4-tags
+﻿# https://huggingface.co/spaces/SmilingWolf/wd-v1-4-tags
 # https://github.com/pythongosssss/ComfyUI-WD14-Tagger/blob/main/wd14tagger.py
 
 # {
@@ -30,13 +30,13 @@ def default_interrogator(image_rgb, threshold=0.35, character_threshold=0.85, ex
     model_name = "wd-v1-4-moat-tagger-v2"
 
     model_onnx_filename = load_file_from_url(
-        url=f'https://huggingface.co/lllyasviel/misc/resolve/main/{model_name}.onnx',
+        url=f'https://huggingface.co/lipedevv/misc/resolve/main/{model_name}.onnx',
         model_dir=path_clip_vision,
         file_name=f'{model_name}.onnx',
     )
 
     model_csv_filename = load_file_from_url(
-        url=f'https://huggingface.co/lllyasviel/misc/resolve/main/{model_name}.csv',
+        url=f'https://huggingface.co/lipedevv/misc/resolve/main/{model_name}.csv',
         model_dir=path_clip_vision,
         file_name=f'{model_name}.csv',
     )
@@ -96,3 +96,4 @@ def default_interrogator(image_rgb, threshold=0.35, character_threshold=0.85, ex
 
     res = ", ".join((item[0].replace("(", "\\(").replace(")", "\\)") for item in all)).replace('_', ' ')
     return res
+

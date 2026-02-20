@@ -1,4 +1,4 @@
-{
+﻿{
     "default_model": "animaPencilXL_v500.safetensors",
     "default_refiner": "None",
     "default_refiner_switch": 0.5,
@@ -37,9 +37,9 @@
     "default_prompt": "",
     "default_prompt_negative": "",
     "default_styles": [
-        "Fooocus V2",
-        "Fooocus Semi Realistic",
-        "Fooocus Masterpiece"
+        "FlowFree V2",
+        "FlowFree Semi Realistic",
+        "FlowFree Masterpiece"
     ],
     "default_aspect_ratio": "896*1152",
     "default_overwrite_step": -1,
@@ -58,3 +58,4 @@
         "animaPencilXL_v100.safetensors"
     ]
 }
+

@@ -202,7 +202,7 @@ function initStylePreviewOverlay() {
         const originalText = label.querySelector("span").getAttribute("data-original-text");
         const name = originalText || label.querySelector("span").textContent;
         overlay.style.backgroundImage = `url("${samplesPath.replace(
-            "fooocus_v2",
+            "flowfree_v2",
             name.toLowerCase().replaceAll(" ", "_")
         ).replaceAll("\\", "\\\\")}")`;
 

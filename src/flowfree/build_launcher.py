@@ -1,12 +1,12 @@
 import os
 
-win32_root = os.path.dirname(os.path.dirname(__file__))
+win32_root = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
 python_embeded_path = os.path.join(win32_root, 'python_embeded')
 
 is_win32_standalone_build = os.path.exists(python_embeded_path) and os.path.isdir(python_embeded_path)
 
 win32_cmd = '''
-.\python_embeded\python.exe -s Fooocus\entry_with_update.py {cmds} %*
+.\python_embeded\python.exe -s FlowFree\flowfree_entry.py {cmds} %*
 pause
 '''
 

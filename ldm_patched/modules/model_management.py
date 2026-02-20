@@ -64,6 +64,16 @@ if args.always_cpu:
         torch.set_num_threads(args.always_cpu)
     print(f"Running on {torch.get_num_threads()} CPU threads")
     cpu_state = CPUState.CPU
+elif not directml_enabled:
+    # Graceful fallback for environments without CUDA.
+    cuda_available = False
+    try:
+        cuda_available = torch.cuda.is_available()
+    except Exception:
+        cuda_available = False
+    if not cuda_available and not xpu_available and cpu_state != CPUState.MPS:
+        print("CUDA is not available. Falling back to CPU mode.")
+        cpu_state = CPUState.CPU
 
 def is_intel_xpu():
     global cpu_state

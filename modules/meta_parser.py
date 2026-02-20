@@ -1,4 +1,4 @@
-import json
+﻿import json
 import re
 from abc import ABC, abstractmethod
 from pathlib import Path
@@ -6,7 +6,7 @@ from pathlib import Path
 import gradio as gr
 from PIL import Image
 
-import fooocus_version
+import flowfree_version
 import modules.config
 import modules.sdxl_styles
 from modules.flags import MetadataScheme, Performance, Steps
@@ -264,7 +264,7 @@ def parse_meta_from_preset(preset_content):
                 width, height = default_aspect_ratio.split('*')
             else:
                 default_aspect_ratio = getattr(modules.config, settings_key)
-                width, height = default_aspect_ratio.split('×')
+                width, height = default_aspect_ratio.split('Ã—')
                 height = height[:height.index(" ")]
             preset_prepared[meta_key] = (width, height)
         else:
@@ -332,7 +332,7 @@ class A1111MetadataParser(MetadataParser):
     def get_scheme(self) -> MetadataScheme:
         return MetadataScheme.A1111
 
-    fooocus_to_a1111 = {
+    flowfree_to_a1111 = {
         'raw_prompt': 'Raw prompt',
         'raw_negative_prompt': 'Raw negative prompt',
         'negative_prompt': 'Negative prompt',
@@ -375,9 +375,9 @@ class A1111MetadataParser(MetadataParser):
 
         for line in lines:
             line = line.strip()
-            if line.startswith(f"{self.fooocus_to_a1111['negative_prompt']}:"):
+            if line.startswith(f"{self.flowfree_to_a1111['negative_prompt']}:"):
                 done_with_prompt = True
-                line = line[len(f"{self.fooocus_to_a1111['negative_prompt']}:"):].strip()
+                line = line[len(f"{self.flowfree_to_a1111['negative_prompt']}:"):].strip()
             if done_with_prompt:
                 metadata_negative_prompt += ('' if metadata_negative_prompt == '' else "\n") + line
             else:
@@ -399,7 +399,7 @@ class A1111MetadataParser(MetadataParser):
                 if m is not None:
                     data['resolution'] = str((m.group(1), m.group(2)))
                 else:
-                    data[list(self.fooocus_to_a1111.keys())[list(self.fooocus_to_a1111.values()).index(k)]] = v
+                    data[list(self.flowfree_to_a1111.keys())[list(self.flowfree_to_a1111.values()).index(k)]] = v
             except Exception:
                 print(f"Error parsing \"{k}: {v}\"")
 
@@ -407,8 +407,8 @@ class A1111MetadataParser(MetadataParser):
         if 'raw_prompt' in data:
             data['prompt'] = data['raw_prompt']
             raw_prompt = data['raw_prompt'].replace("\n", ', ')
-            if metadata_prompt != raw_prompt and modules.sdxl_styles.fooocus_expansion not in found_styles:
-                found_styles.append(modules.sdxl_styles.fooocus_expansion)
+            if metadata_prompt != raw_prompt and modules.sdxl_styles.flowfree_expansion not in found_styles:
+                found_styles.append(modules.sdxl_styles.flowfree_expansion)
 
         if 'raw_negative_prompt' in data:
             data['negative_prompt'] = data['raw_negative_prompt']
@@ -470,50 +470,50 @@ class A1111MetadataParser(MetadataParser):
                 sampler += f' Karras'
 
         generation_params = {
-            self.fooocus_to_a1111['steps']: self.steps,
-            self.fooocus_to_a1111['sampler']: sampler,
-            self.fooocus_to_a1111['seed']: data['seed'],
-            self.fooocus_to_a1111['resolution']: f'{width}x{height}',
-            self.fooocus_to_a1111['guidance_scale']: data['guidance_scale'],
-            self.fooocus_to_a1111['sharpness']: data['sharpness'],
-            self.fooocus_to_a1111['adm_guidance']: data['adm_guidance'],
-            self.fooocus_to_a1111['base_model']: Path(data['base_model']).stem,
-            self.fooocus_to_a1111['base_model_hash']: self.base_model_hash,
+            self.flowfree_to_a1111['steps']: self.steps,
+            self.flowfree_to_a1111['sampler']: sampler,
+            self.flowfree_to_a1111['seed']: data['seed'],
+            self.flowfree_to_a1111['resolution']: f'{width}x{height}',
+            self.flowfree_to_a1111['guidance_scale']: data['guidance_scale'],
+            self.flowfree_to_a1111['sharpness']: data['sharpness'],
+            self.flowfree_to_a1111['adm_guidance']: data['adm_guidance'],
+            self.flowfree_to_a1111['base_model']: Path(data['base_model']).stem,
+            self.flowfree_to_a1111['base_model_hash']: self.base_model_hash,
 
-            self.fooocus_to_a1111['performance']: data['performance'],
-            self.fooocus_to_a1111['scheduler']: scheduler,
-            self.fooocus_to_a1111['vae']: Path(data['vae']).stem,
+            self.flowfree_to_a1111['performance']: data['performance'],
+            self.flowfree_to_a1111['scheduler']: scheduler,
+            self.flowfree_to_a1111['vae']: Path(data['vae']).stem,
             # workaround for multiline prompts
-            self.fooocus_to_a1111['raw_prompt']: self.raw_prompt,
-            self.fooocus_to_a1111['raw_negative_prompt']: self.raw_negative_prompt,
+            self.flowfree_to_a1111['raw_prompt']: self.raw_prompt,
+            self.flowfree_to_a1111['raw_negative_prompt']: self.raw_negative_prompt,
         }
 
         if self.refiner_model_name not in ['', 'None']:
             generation_params |= {
-                self.fooocus_to_a1111['refiner_model']: self.refiner_model_name,
-                self.fooocus_to_a1111['refiner_model_hash']: self.refiner_model_hash
+                self.flowfree_to_a1111['refiner_model']: self.refiner_model_name,
+                self.flowfree_to_a1111['refiner_model_hash']: self.refiner_model_hash
             }
 
         for key in ['adaptive_cfg', 'clip_skip', 'overwrite_switch', 'refiner_swap_method', 'freeu']:
             if key in data:
-                generation_params[self.fooocus_to_a1111[key]] = data[key]
+                generation_params[self.flowfree_to_a1111[key]] = data[key]
 
         if len(self.loras) > 0:
             lora_hashes = []
             lora_weights = []
             for index, (lora_name, lora_weight, lora_hash) in enumerate(self.loras):
-                # workaround for Fooocus not knowing LoRA name in LoRA metadata
+                # workaround for FlowFree not knowing LoRA name in LoRA metadata
                 lora_hashes.append(f'{lora_name}: {lora_hash}')
                 lora_weights.append(f'{lora_name}: {lora_weight}')
             lora_hashes_string = ', '.join(lora_hashes)
             lora_weights_string = ', '.join(lora_weights)
-            generation_params[self.fooocus_to_a1111['lora_hashes']] = lora_hashes_string
-            generation_params[self.fooocus_to_a1111['lora_weights']] = lora_weights_string
+            generation_params[self.flowfree_to_a1111['lora_hashes']] = lora_hashes_string
+            generation_params[self.flowfree_to_a1111['lora_weights']] = lora_weights_string
 
-        generation_params[self.fooocus_to_a1111['version']] = data['version']
+        generation_params[self.flowfree_to_a1111['version']] = data['version']
 
         if modules.config.metadata_created_by != '':
-            generation_params[self.fooocus_to_a1111['created_by']] = modules.config.metadata_created_by
+            generation_params[self.flowfree_to_a1111['created_by']] = modules.config.metadata_created_by
 
         generation_params_text = ", ".join(
             [k if k == v else f'{k}: {quote(v)}' for k, v in generation_params.items() if
@@ -532,9 +532,9 @@ class A1111MetadataParser(MetadataParser):
                 break
 
 
-class FooocusMetadataParser(MetadataParser):
+class FlowFreeMetadataParser(MetadataParser):
     def get_scheme(self) -> MetadataScheme:
-        return MetadataScheme.FOOOCUS
+        return MetadataScheme.FLOWFREE
 
     def to_json(self, metadata: dict) -> dict:
         for key, value in metadata.items():
@@ -596,8 +596,8 @@ class FooocusMetadataParser(MetadataParser):
 
 def get_metadata_parser(metadata_scheme: MetadataScheme) -> MetadataParser:
     match metadata_scheme:
-        case MetadataScheme.FOOOCUS:
-            return FooocusMetadataParser()
+        case MetadataScheme.FLOWFREE:
+            return FlowFreeMetadataParser()
         case MetadataScheme.A1111:
             return A1111MetadataParser()
         case _:
@@ -608,7 +608,7 @@ def read_info_from_image(file) -> tuple[str | None, MetadataScheme | None]:
     items = (file.info or {}).copy()
 
     parameters = items.pop('parameters', None)
-    metadata_scheme = items.pop('fooocus_scheme', None)
+    metadata_scheme = items.pop('flowfree_scheme', None)
     exif = items.pop('exif', None)
 
     if parameters is not None and is_json(parameters):
@@ -630,7 +630,7 @@ def read_info_from_image(file) -> tuple[str | None, MetadataScheme | None]:
 
         # broad fallback
         if isinstance(parameters, dict):
-            metadata_scheme = MetadataScheme.FOOOCUS
+            metadata_scheme = MetadataScheme.FLOWFREE
 
         if isinstance(parameters, str):
             metadata_scheme = MetadataScheme.A1111
@@ -644,7 +644,8 @@ def get_exif(metadata: str | None, metadata_scheme: str):
     # 0x9286 = UserComment
     exif[0x9286] = metadata
     # 0x0131 = Software
-    exif[0x0131] = 'Fooocus v' + fooocus_version.version
+    exif[0x0131] = 'FlowFree v' + flowfree_version.version
     # 0x927C = MakerNote
     exif[0x927C] = metadata_scheme
     return exif
+

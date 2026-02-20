@@ -15,6 +15,7 @@ def normalize_key(k):
     words = k.split(' ')
     words = [w[:1].upper() + w[1:].lower() for w in words]
     k = ' '.join(words)
+    k = k.replace('Flowfree', 'FlowFree')
     k = k.replace('3d', '3D')
     k = k.replace('Sai', 'SAI')
     k = k.replace('Mre', 'MRE')
@@ -25,7 +26,7 @@ def normalize_key(k):
 styles = {}
 styles_files = get_files_from_folder(styles_path, ['.json'])
 
-for x in ['sdxl_styles_fooocus.json',
+for x in ['sdxl_styles_flowfree.json',
           'sdxl_styles_sai.json',
           'sdxl_styles_mre.json',
           'sdxl_styles_twri.json',
@@ -37,7 +38,8 @@ for x in ['sdxl_styles_fooocus.json',
 
 for styles_file in styles_files:
     try:
-        with open(os.path.join(styles_path, styles_file), encoding='utf-8') as f:
+        # Accept both UTF-8 and UTF-8 BOM encoded style files.
+        with open(os.path.join(styles_path, styles_file), encoding='utf-8-sig') as f:
             for entry in json.load(f):
                 name = normalize_key(entry['name'])
                 prompt = entry['prompt'] if 'prompt' in entry else ''
@@ -48,9 +50,9 @@ for styles_file in styles_files:
         print(f'Failed to load style file {styles_file}')
 
 style_keys = list(styles.keys())
-fooocus_expansion = 'Fooocus V2'
+flowfree_expansion = 'FlowFree V2'
 random_style_name = 'Random Style'
-legal_style_names = [fooocus_expansion, random_style_name] + style_keys
+legal_style_names = [flowfree_expansion, random_style_name] + style_keys
 
 
 def get_random_style(rng: Random) -> str:

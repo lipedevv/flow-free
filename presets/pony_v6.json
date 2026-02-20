@@ -1,4 +1,4 @@
-{
+﻿{
     "default_model": "ponyDiffusionV6XL.safetensors",
     "default_refiner": "None",
     "default_refiner_switch": 0.5,
@@ -38,7 +38,7 @@
     "default_prompt": "",
     "default_prompt_negative": "",
     "default_styles": [
-        "Fooocus Pony"
+        "FlowFree Pony"
     ],
     "default_aspect_ratio": "896*1152",
     "default_overwrite_step": -1,
@@ -52,3 +52,4 @@
         "ponyDiffusionV6XL_vae.safetensors": "https://huggingface.co/mashb1t/fav_models/resolve/main/fav/ponyDiffusionV6XL_vae.safetensors"
     }
 }
+

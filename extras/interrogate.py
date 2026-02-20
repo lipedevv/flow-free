@@ -1,4 +1,4 @@
-import os
+﻿import os
 import torch
 import ldm_patched.modules.model_management as model_management
 
@@ -26,7 +26,7 @@ class Interrogator:
     def interrogate(self, img_rgb):
         if self.blip_model is None:
             filename = load_file_from_url(
-                url='https://huggingface.co/lllyasviel/misc/resolve/main/model_base_caption_capfilt_large.pth',
+                url='https://huggingface.co/lipedevv/misc/resolve/main/model_base_caption_capfilt_large.pth',
                 model_dir=path_clip_vision,
                 file_name='model_base_caption_capfilt_large.pth',
             )
@@ -61,3 +61,4 @@ class Interrogator:
 
 
 default_interrogator = Interrogator().interrogate
+

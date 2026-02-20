@@ -133,7 +133,7 @@ def solve_abcd(x, a, b, c, d, k):
     return a, b, c, d
 
 
-def fooocus_fill(image, mask):
+def flowfree_fill(image, mask):
     current_image = image.copy()
     raw_image = image.copy()
     area = np.where(mask < 127)
@@ -171,7 +171,8 @@ class InpaintWorker:
 
         # compute filling
         if use_fill:
-            self.interested_fill = fooocus_fill(self.interested_image, self.interested_mask)
+            self.interested_fill = flowfree_fill(self.interested_image, self.interested_mask)
+
 
         # soft pixels
         self.mask = morphological_open(mask)
