@@ -613,7 +613,20 @@ def read_info_from_image(file) -> tuple[str | None, MetadataScheme | None]:
     metadata_scheme = items.pop('flowfree_scheme', None)
     exif = items.pop('exif', None)
 
-    if parameters is not None and is_json(parameters):
+    def _decode_if_bytes(value):
+        if isinstance(value, (bytes, bytearray)):
+            for encoding in ('utf-8-sig', 'utf-8'):
+                try:
+                    return value.decode(encoding)
+                except Exception:
+                    continue
+            return value.decode('utf-8', errors='ignore')
+        return value
+
+    parameters = _decode_if_bytes(parameters)
+    metadata_scheme = _decode_if_bytes(metadata_scheme)
+
+    if isinstance(parameters, str) and is_json(parameters):
         parameters = json.loads(parameters)
     elif exif is not None:
         exif = file.getexif()
@@ -622,12 +635,15 @@ def read_info_from_image(file) -> tuple[str | None, MetadataScheme | None]:
         # 0x927C = MakerNote
         metadata_scheme = exif.get(0x927C, None)
 
-        if is_json(parameters):
+        parameters = _decode_if_bytes(parameters)
+        metadata_scheme = _decode_if_bytes(metadata_scheme)
+
+        if isinstance(parameters, str) and is_json(parameters):
             parameters = json.loads(parameters)
 
     try:
         metadata_scheme = MetadataScheme(metadata_scheme)
-    except ValueError:
+    except (ValueError, TypeError):
         metadata_scheme = None
 
         # broad fallback

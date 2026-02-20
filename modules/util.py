@@ -352,11 +352,11 @@ class PromptStyle(NamedTuple):
     negative_prompt: str
 
 
-def is_json(data: str) -> bool:
+def is_json(data) -> bool:
     try:
         loaded_json = json.loads(data)
         assert isinstance(loaded_json, dict)
-    except (ValueError, AssertionError):
+    except (TypeError, ValueError, AssertionError):
         return False
     return True
 
