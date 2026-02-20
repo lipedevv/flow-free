@@ -1,4 +1,5 @@
 import threading
+import re
 
 from extras.inpaint_mask import generate_mask_from_image, SAMOptions
 from modules.patch import PatchSettings, patch_settings, patch_all
@@ -1115,8 +1116,12 @@ def worker():
         denoising_strength = 1.0
         tiled = False
 
-        width, height = async_task.aspect_ratios_selection.replace('×', ' ').split(' ')[:2]
-        width, height = int(width), int(height)
+        # Parse "width x height" robustly from labels like:
+        # "1152x896 ...", "1152*896", or misencoded text.
+        dimensions = re.findall(r'\d+', str(async_task.aspect_ratios_selection))
+        if len(dimensions) < 2:
+            raise ValueError(f'Invalid aspect ratio label: {async_task.aspect_ratios_selection}')
+        width, height = int(dimensions[0]), int(dimensions[1])
 
         skip_prompt_processing = False
 

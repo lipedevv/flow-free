@@ -261,11 +261,13 @@ def parse_meta_from_preset(preset_content):
         elif settings_key == "default_aspect_ratio":
             if settings_key in items and items[settings_key] is not None:
                 default_aspect_ratio = items[settings_key]
-                width, height = default_aspect_ratio.split('*')
+                ratio_tokens = re.findall(r'\d+', str(default_aspect_ratio))
             else:
                 default_aspect_ratio = getattr(modules.config, settings_key)
-                width, height = default_aspect_ratio.split('Ã—')
-                height = height[:height.index(" ")]
+                ratio_tokens = re.findall(r'\d+', str(default_aspect_ratio))
+            if len(ratio_tokens) < 2:
+                raise ValueError(f'Invalid aspect ratio value: {default_aspect_ratio}')
+            width, height = ratio_tokens[0], ratio_tokens[1]
             preset_prepared[meta_key] = (width, height)
         else:
             preset_prepared[meta_key] = items[settings_key] if settings_key in items and items[settings_key] is not None else getattr(modules.config, settings_key)
